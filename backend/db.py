@@ -6,8 +6,14 @@ load_dotenv()
 
 DB_PATH = os.getenv("DB_PATH", "../data/expenses.db")
 
-# Ensure the directory exists
-os.makedirs(os.path.dirname(os.path.abspath(DB_PATH)), exist_ok=True)
+# Ensure the directory exists; fallback to local ./data/ if the configured path fails
+try:
+    db_dir = os.path.dirname(os.path.abspath(DB_PATH))
+    os.makedirs(db_dir, exist_ok=True)
+except (PermissionError, OSError):
+    DB_PATH = os.path.join(os.path.dirname(__file__), "data", "expenses.db")
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+
 
 
 def get_connection():
