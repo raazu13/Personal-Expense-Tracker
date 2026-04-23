@@ -1,9 +1,7 @@
 import sqlite3
 import os
-from dotenv import load_dotenv
+from db import DB_PATH
 
-load_dotenv()
-DB_PATH = os.getenv("DB_PATH", "../data/expenses.db")
 
 
 def _conn():

@@ -96,10 +96,10 @@ export default function Dashboard() {
                 <div key={i} className="h-12 bg-gray-100 dark:bg-gray-800 rounded-xl animate-pulse" />
               ))}
             </div>
-          ) : dashData?.recent_expenses?.length === 0 ? (
+          ) : !dashData || dashData.recent_expenses.length === 0 ? (
             <div className="text-center py-8 text-gray-400">
               <p className="text-3xl mb-2">📭</p>
-              <p className="text-sm">No expenses yet. Add one!</p>
+              <p className="text-sm">{!dashData ? 'Could not load data. Is the backend running?' : 'No expenses yet. Add one!'}</p>
             </div>
           ) : (
             <div className="space-y-2">

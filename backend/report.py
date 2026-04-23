@@ -2,11 +2,10 @@ import os
 import sqlite3
 from fpdf import FPDF
 from datetime import datetime
-from dotenv import load_dotenv
+from db import DB_PATH
 
-load_dotenv()
-DB_PATH = os.getenv("DB_PATH", "../data/expenses.db")
 REPORTS_DIR = os.path.join(os.path.dirname(os.path.abspath(DB_PATH)), "reports")
+
 
 
 def generate_monthly_report(month: str) -> str:
