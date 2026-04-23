@@ -1,12 +1,12 @@
 <div align="center">
 
-# 💰 Personal Expense Tracker
+#  Personal Expense Tracker
 
 ### A full-stack web application to track expenses, analyze spending patterns, and stay on budget
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-6366f1?style=for-the-badge)](YOUR_VERCEL_URL)
-[![Backend API](https://img.shields.io/badge/🔌_Backend_API-Render-46E3B7?style=for-the-badge)](YOUR_RENDER_URL/api/health)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](YOUR_GITHUB_URL)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-6366f1?style=for-the-badge)](https://personal-expense-tracker-six-sigma.vercel.app)
+[![Backend API](https://img.shields.io/badge/🔌_Backend_API-Render-46E3B7?style=for-the-badge)](https://dashboard.render.com/web/srv-d7kl0qvavr4c73ag1vk0)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/raazu13/Personal-Expense-Tracker)
 
 ![React](https://img.shields.io/badge/React_18-61DAFB?style=flat&logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat&logo=vite&logoColor=white)
