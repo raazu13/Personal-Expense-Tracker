@@ -1,124 +1,156 @@
+<div align="center">
+
 # 💰 Personal Expense Tracker
 
-A full-stack web app to track personal expenses, set budgets, and view beautiful analytics charts.
+### A full-stack web application to track expenses, analyze spending patterns, and stay on budget
 
-**Stack:** React 18 + Vite + Tailwind CSS (frontend) · Python Flask (backend) · SQLite (database)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-6366f1?style=for-the-badge)](YOUR_VERCEL_URL)
+[![Backend API](https://img.shields.io/badge/🔌_Backend_API-Render-46E3B7?style=for-the-badge)](YOUR_RENDER_URL/api/health)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](YOUR_GITHUB_URL)
 
----
+![React](https://img.shields.io/badge/React_18-61DAFB?style=flat&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat&logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
+![Python](https://img.shields.io/badge/Python_3-3776AB?style=flat&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat&logo=sqlite&logoColor=white)
+![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=flat&logo=plotly&logoColor=white)
 
-## 🚀 Quick Start (Local Development)
-
-### Prerequisites
-- **Python 3.10+** with pip
-- **Node.js 18+** with npm
-
-### 1. Clone & Install
-
-```bash
-git clone <your-repo-url>
-cd expense-tracker
-
-# Install Python dependencies
-cd backend
-pip install -r requirements.txt
-cd ..
-
-# Install Node.js dependencies (root + frontend)
-npm install          # installs concurrently
-npm run install:all  # installs frontend dependencies
-```
-
-### 2. Configure Environment
-
-```bash
-# backend/.env is already preconfigured for local dev:
-# DB_PATH=../data/expenses.db
-# FLASK_PORT=5000
-
-# frontend/.env is already preconfigured:
-# VITE_API_URL=http://localhost:5000
-```
-
-### 3. Run Both Servers
-
-```bash
-npm run dev
-```
-
-This starts:
-- 🐍 Flask backend at **http://localhost:5000**
-- ⚛️ React frontend at **http://localhost:5173**
-
-Open **http://localhost:5173** in your browser.
+</div>
 
 ---
 
-## 📁 Project Structure
+## ✨ What Makes This App Stand Out
+
+| Feature | Details |
+|---------|---------|
+| 📊 **Interactive Analytics** | Real-time Plotly charts — monthly trends, category breakdowns, spend-over-time |
+| 🧠 **ML Spend Prediction** | Linear regression predicts your end-of-month spend based on current rate |
+| 🔍 **Anomaly Detection** | IQR statistical method flags unusual expenses automatically |
+| 🔁 **Recurring Expenses** | Auto-adds subscriptions and recurring bills every day at startup |
+| 🚨 **Smart Budget Alerts** | Color-coded warnings at 80% and 100% of category budgets |
+| 📄 **PDF Reports** | Generates styled monthly expense reports with category breakdowns |
+| 🌙 **Dark Mode** | Full dark/light theme persistence — even charts switch themes |
+| 📤 **CSV Export** | Export filtered expense data for external use |
+
+---
+
+## 🖥️ App Preview
+
+> Dashboard · Expenses · Analytics · Settings
+
+*(Add your screenshots here)*
+
+---
+
+## 🏗️ Architecture
 
 ```
-expense-tracker/
-├── frontend/               React app (Vite + Tailwind)
-│   └── src/
-│       ├── pages/          Dashboard, Expenses, Analytics, Settings
-│       ├── components/     Reusable UI components
-│       ├── context/        ThemeContext (dark/light mode)
-│       └── api/client.js   Axios instance
-├── backend/                Python Flask API
-│   ├── app.py              All routes
-│   ├── db.py               SQLite schema + seeding
-│   ├── charts.py           Plotly chart generators
-│   ├── predict.py          Spend prediction (scikit-learn)
-│   └── report.py           PDF reports (fpdf2)
-└── data/
-    ├── expenses.db         SQLite database (auto-created)
-    └── reports/            PDF reports saved here
+┌─────────────────────┐         ┌──────────────────────────┐
+│   React 18 + Vite   │  HTTP   │    Python Flask API       │
+│   Tailwind CSS      │◄───────►│    REST Endpoints         │
+│   Axios + Router    │  JSON   │    Plotly Charts (HTML)   │
+│   Vercel (hosted)   │         │    Render (hosted)        │
+└─────────────────────┘         └──────────┬───────────────┘
+                                            │ sqlite3
+                                 ┌──────────▼───────────────┐
+                                 │      SQLite Database      │
+                                 │  expenses · categories    │
+                                 │  budgets  · recurring     │
+                                 └──────────────────────────┘
 ```
 
 ---
 
-## 🌟 Features
+## ⚙️ Tech Stack
 
-| Feature | Description |
-|---------|-------------|
-| 📊 Dashboard | Summary cards, budget progress bars, recent expenses, anomaly alerts |
-| 💸 Expenses | Sortable table, filters, CSV export, add/edit/delete |
-| 📈 Analytics | Plotly charts (monthly trend, category pie, category trend), spend prediction |
-| ⚙️ Settings | Category management, monthly budgets, recurring expenses, PDF reports |
-| 🌙 Dark Mode | Toggle dark/light theme, persists across sessions |
-| 🔁 Recurring | Auto-adds recurring expenses on app load |
-| 🔍 Anomalies | IQR-based statistical outlier detection |
+### Frontend
+- **React 18** — component-based UI with hooks
+- **Vite** — lightning-fast build tool and dev server
+- **Tailwind CSS** — utility-first styling with full dark mode
+- **React Router v6** — client-side routing
+- **Axios** — HTTP client with interceptors
+- **react-hot-toast** — elegant toast notifications
+
+### Backend
+- **Python 3 + Flask** — lightweight REST API
+- **Plotly** — interactive chart generation (HTML output)
+- **fpdf2** — programmatic PDF generation
+- **Pure Python analytics** — linear regression & IQR anomaly detection without heavy dependencies
+- **SQLite** — embedded relational database (zero config)
+- **Gunicorn** — production WSGI server
 
 ---
 
-## 🔌 API Reference
+## 🔌 API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET/POST | `/api/expenses` | List (with filters) / Add expense |
-| PUT/DELETE | `/api/expenses/<id>` | Update / Delete expense |
-| GET | `/api/categories` | All categories with monthly spend |
-| GET | `/api/dashboard?month=` | Full dashboard summary |
-| GET | `/api/charts/monthly` | Plotly HTML — 12-month bar chart |
-| GET | `/api/charts/category?month=` | Plotly HTML — category pie |
-| GET | `/api/charts/trend?category_id=` | Plotly HTML — trend line |
-| GET | `/api/predict?month=` | ML spend prediction |
-| GET | `/api/report?month=` | Download PDF report |
-| POST | `/api/recurring/process` | Auto-add today's recurring expenses |
+| `GET` | `/api/dashboard?month=` | Full summary — totals, alerts, recent, anomalies |
+| `GET/POST` | `/api/expenses` | List with filters / add expense |
+| `PUT/DELETE` | `/api/expenses/:id` | Update or delete |
+| `GET` | `/api/charts/monthly` | Plotly bar chart — 12-month trend |
+| `GET` | `/api/charts/category?month=` | Plotly pie chart — category split |
+| `GET` | `/api/charts/trend?category_id=` | Plotly line — category over time |
+| `GET` | `/api/predict` | ML spend prediction for current month |
+| `GET` | `/api/anomalies` | IQR-based outlier detection |
+| `GET` | `/api/report?month=` | Download PDF report |
+| `POST` | `/api/recurring/process` | Auto-add today's due recurring expenses |
 
 ---
 
-## 🌐 Deployment
+## 📂 Project Structure
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for full instructions (Vercel + Render).
+```
+expense-tracker/
+├── frontend/                   # React app
+│   └── src/
+│       ├── pages/              # Dashboard, Expenses, Analytics, Settings
+│       ├── components/         # Reusable UI (Table, Forms, Charts, Cards)
+│       ├── context/            # ThemeContext (dark/light)
+│       └── api/client.js       # Axios instance
+└── backend/                    # Flask API
+    ├── app.py                  # All routes
+    ├── db.py                   # Schema + auto-seeding
+    ├── analysis.py             # Aggregations (pure Python + SQLite)
+    ├── predict.py              # Linear regression prediction
+    ├── charts.py               # Plotly chart generators
+    └── report.py               # PDF generator
+```
 
 ---
 
-## 💡 Default Categories
+## 🚀 Run Locally
 
-The database auto-seeds these on first run:
-- 🍔 **Food** (₹8,000/month) — red
-- 🚌 **Transport** (₹3,000/month) — orange  
-- 🏠 **Rent** (₹15,000/month) — purple
-- 🎬 **Entertainment** (₹2,000/month) — cyan
-- 💊 **Health** (₹3,000/month) — green
-- 🛍️ **Shopping** (₹5,000/month) — amber
+```bash
+# Clone
+git clone https://github.com/YOUR_USERNAME/personal-expense-tracker.git
+cd personal-expense-tracker
+
+# Backend
+cd backend && pip install -r requirements.txt && cd ..
+
+# Frontend
+npm install && npm run install:all
+
+# Start both servers
+npm run dev
+# → http://localhost:5173
+```
+
+---
+
+## 💡 Key Engineering Decisions
+
+- **No heavy ML libraries in production** — Implemented linear regression and IQR anomaly detection in pure Python to avoid compilation issues across Python versions, keeping the backend lightweight and fast to deploy.
+- **Plotly charts as HTML** — Charts are generated server-side and served as HTML strings, rendered in iframes. This keeps the frontend bundle small while supporting fully interactive charts.
+- **Shared SQLite DB path resolution** — A single fallback-aware path resolver ensures the database works across local dev, Docker, and cloud environments (Render free tier with no disk mount).
+- **Recurring expense idempotency** — The recurring processor checks for existing entries before inserting to prevent duplicates even if triggered multiple times in a day.
+
+---
+
+<div align="center">
+
+**Built with ❤️ | Open to feedback and contributions**
+
+</div>
