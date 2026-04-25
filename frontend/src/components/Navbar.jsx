@@ -56,14 +56,8 @@ export default function Navbar() {
             {user && (
               <div className="hidden md:flex items-center gap-3 border-r border-gray-200 dark:border-gray-700 pr-3 mr-1">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {user.name || user.email.split('@')[0]}
+                  Hi, {user.name || user.email.split('@')[0]}
                 </span>
-                <button 
-                  onClick={logout}
-                  className="text-sm text-red-500 hover:text-red-700 dark:hover:text-red-400 font-medium px-2 py-1 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                >
-                  Logout
-                </button>
               </div>
             )}
             
@@ -104,13 +98,6 @@ export default function Navbar() {
                 </Link>
               )
             })}
-            <button
-              onClick={logout}
-              className="flex flex-col items-center py-1.5 px-3 rounded-lg text-xs font-medium transition-all text-red-500 hover:text-red-600 dark:text-red-400"
-            >
-              <span className="text-base">🚪</span>
-              <span className="truncate w-full text-center">Logout</span>
-            </button>
           </div>
         )}
       </div>
