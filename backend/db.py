@@ -9,6 +9,8 @@ DATABASE_URL = os.getenv("DATABASE_URL", "")
 
 
 def get_connection():
+    if not DATABASE_URL:
+        raise ValueError("CRITICAL ERROR: 'DATABASE_URL' environment variable is NOT SET! You must add your PostgreSQL Internal Database URL to your Render Environment Variables.")
     conn = psycopg2.connect(DATABASE_URL)
     return conn
 
