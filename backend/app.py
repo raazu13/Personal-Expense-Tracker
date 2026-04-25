@@ -173,6 +173,32 @@ def reset_password():
     return jsonify({"success": True, "message": "Password updated successfully"})
 
 
+@app.route("/api/auth/password", methods=["PUT"])
+@require_auth
+def change_password():
+    data = request.json or {}
+    current_password = data.get("current_password", "")
+    new_password = data.get("new_password", "")
+    
+    if len(new_password) < 6:
+        return jsonify({"error": "New password must be at least 6 characters"}), 400
+
+    conn = get_connection()
+    with cur(conn) as c:
+        c.execute("SELECT password_hash FROM users WHERE id = %s", (request.user_id,))
+        user = c.fetchone()
+        
+        if not user or not bcrypt.checkpw(current_password.encode(), user["password_hash"].encode()):
+            conn.close()
+            return jsonify({"error": "Incorrect current password"}), 401
+
+        new_hashed = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
+        c.execute("UPDATE users SET password_hash = %s WHERE id = %s", (new_hashed, request.user_id))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True, "message": "Password updated successfully"})
+
+
 # ── Expenses ───────────────────────────────────────────────────────────────────
 @app.route("/api/expenses", methods=["GET"])
 @require_auth

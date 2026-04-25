@@ -7,6 +7,7 @@ const navLinks = [
   { path: '/expenses', label: 'Expenses', icon: '💸' },
   { path: '/analytics', label: 'Analytics', icon: '📈' },
   { path: '/settings', label: 'Settings', icon: '⚙️' },
+  { path: '/profile', label: 'Profile', icon: '👤' },
 ]
 
 export default function Navbar() {
@@ -105,7 +106,7 @@ export default function Navbar() {
             })}
             <button
               onClick={logout}
-              className="flex-1 flex flex-col items-center py-1.5 rounded-lg text-xs font-medium transition-all text-red-500 hover:text-red-600 dark:text-red-400"
+              className="flex flex-col items-center py-1.5 px-3 rounded-lg text-xs font-medium transition-all text-red-500 hover:text-red-600 dark:text-red-400"
             >
               <span className="text-base">🚪</span>
               <span className="truncate w-full text-center">Logout</span>
