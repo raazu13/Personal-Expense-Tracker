@@ -61,19 +61,25 @@ def register():
     email = data.get("email", "").strip().lower()
     password = data.get("password", "")
     name = data.get("name", "").strip()
+    security_question = data.get("security_question", "").strip()
+    security_answer = data.get("security_answer", "").strip().lower()
 
     if not email or not password:
         return jsonify({"error": "Email and password are required"}), 400
     if len(password) < 6:
         return jsonify({"error": "Password must be at least 6 characters"}), 400
+    if not security_question or not security_answer:
+        return jsonify({"error": "Security question and answer are tightly required for password recovery"}), 400
 
     hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+    ans_hashed = bcrypt.hashpw(security_answer.encode(), bcrypt.gensalt()).decode()
+
     conn = get_connection()
     try:
         with cur(conn) as c:
             c.execute(
-                "INSERT INTO users (email, password_hash, name) VALUES (%s, %s, %s) RETURNING id, email, name",
-                (email, hashed, name)
+                "INSERT INTO users (email, password_hash, name, security_question, security_answer_hash) VALUES (%s, %s, %s, %s, %s) RETURNING id, email, name",
+                (email, hashed, name, security_question, ans_hashed)
             )
             user = dict(c.fetchone())
         conn.commit()
@@ -115,6 +121,56 @@ def get_me():
         user = c.fetchone()
     conn.close()
     return jsonify(dict(user)) if user else (jsonify({"error": "Not found"}), 404)
+
+
+@app.route("/api/auth/account", methods=["DELETE"])
+@require_auth
+def delete_account():
+    conn = get_connection()
+    with cur(conn) as c:
+        c.execute("DELETE FROM users WHERE id = %s", (request.user_id,))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True})
+
+
+@app.route("/api/auth/security-question", methods=["GET"])
+def get_security_question():
+    email = request.args.get("email", "").strip().lower()
+    conn = get_connection()
+    with cur(conn) as c:
+        c.execute("SELECT security_question FROM users WHERE email = %s", (email,))
+        user = c.fetchone()
+    conn.close()
+    if not user or not user["security_question"]:
+        return jsonify({"error": "No security question formulated for this account."}), 404
+    return jsonify({"security_question": user["security_question"]})
+
+
+@app.route("/api/auth/reset-password", methods=["POST"])
+def reset_password():
+    data = request.json or {}
+    email = data.get("email", "").strip().lower()
+    security_answer = data.get("security_answer", "").strip().lower()
+    new_password = data.get("new_password", "")
+
+    if len(new_password) < 6:
+        return jsonify({"error": "New password must be at least 6 characters"}), 400
+
+    conn = get_connection()
+    with cur(conn) as c:
+        c.execute("SELECT id, security_answer_hash FROM users WHERE email = %s", (email,))
+        user = c.fetchone()
+        
+        if not user or not user["security_answer_hash"] or not bcrypt.checkpw(security_answer.encode(), user["security_answer_hash"].encode()):
+            conn.close()
+            return jsonify({"error": "Invalid email or security answer"}), 401
+
+        new_hashed = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
+        c.execute("UPDATE users SET password_hash = %s WHERE id = %s", (new_hashed, user["id"]))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True, "message": "Password updated successfully"})
 
 
 # ── Expenses ───────────────────────────────────────────────────────────────────

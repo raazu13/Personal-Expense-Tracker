@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import client from '../api/client'
 import toast from 'react-hot-toast'
+import { useAuth } from '../context/AuthContext'
 import CategoryForm from '../components/CategoryForm'
 
 const thisMonth = () => new Date().toISOString().slice(0, 7)
@@ -17,6 +18,8 @@ export default function Settings() {
   const [recForm, setRecForm] = useState({ description: '', amount: '', category_id: '', day_of_month: 1 })
   const [reportMonth, setReportMonth] = useState(thisMonth())
   const [clearConfirm, setClearConfirm] = useState(false)
+  const [deleteConfirm, setDeleteConfirm] = useState(false)
+  const { deleteAccount } = useAuth()
 
   const fetchAll = useCallback(async () => {
     try {
@@ -84,6 +87,10 @@ export default function Settings() {
     )
     toast.success('All expenses cleared')
     setClearConfirm(false)
+  }
+
+  const handleDeleteAccount = async () => {
+    await deleteAccount()
   }
 
   return (
@@ -244,22 +251,42 @@ export default function Settings() {
 
       {/* Danger Zone */}
       <div className="card p-5 border border-red-200 dark:border-red-900">
-        <h2 className="font-semibold text-red-600 dark:text-red-400 text-lg mb-3 flex items-center gap-2">
+        <h2 className="font-semibold text-red-600 dark:text-red-400 text-lg mb-4 flex items-center gap-2">
           ⚠️ Danger Zone
         </h2>
-        {!clearConfirm ? (
-          <button onClick={() => setClearConfirm(true)} className="btn-danger text-sm">
-            🗑️ Clear All Expense Data
-          </button>
-        ) : (
-          <div className="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl">
-            <p className="text-sm text-red-600 dark:text-red-300 flex-1">
-              This will permanently delete ALL expenses. Are you sure?
-            </p>
-            <button onClick={() => setClearConfirm(false)} className="btn-secondary text-sm">Cancel</button>
-            <button onClick={handleClearAll} className="btn-danger text-sm">Yes, Delete All</button>
-          </div>
-        )}
+        <div className="space-y-4">
+          {!clearConfirm ? (
+            <button onClick={() => setClearConfirm(true)} className="btn-danger w-full md:w-auto text-sm mr-0 md:mr-3 mb-3 md:mb-0">
+              🗑️ Clear All Expense Data
+            </button>
+          ) : (
+            <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl mb-3">
+              <p className="text-sm text-red-600 dark:text-red-300 flex-1 min-w-[200px]">
+                This will permanently delete ALL expenses. Are you sure?
+              </p>
+              <div className="flex gap-2">
+                <button onClick={() => setClearConfirm(false)} className="btn-secondary text-sm">Cancel</button>
+                <button onClick={handleClearAll} className="btn-danger text-sm">Yes, Delete All</button>
+              </div>
+            </div>
+          )}
+
+          {!deleteConfirm ? (
+            <button onClick={() => setDeleteConfirm(true)} className="btn-danger w-full md:w-auto text-sm bg-red-600 hover:bg-red-700 text-white dark:bg-red-700 dark:hover:bg-red-800">
+              🚨 Permanently Delete Account
+            </button>
+          ) : (
+            <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl mt-3 border border-red-200 dark:border-red-800">
+              <p className="text-sm text-red-600 dark:text-red-300 flex-1 min-w-[200px] font-medium">
+                This will perfectly delete your account, budget, categories, and ALL expenses. You CANNOT UNDO this.
+              </p>
+              <div className="flex gap-2">
+                <button onClick={() => setDeleteConfirm(false)} className="btn-secondary text-sm">Cancel</button>
+                <button onClick={handleDeleteAccount} className="btn-danger text-sm bg-red-600 hover:bg-red-700">Delete My Account</button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {showCatForm && (

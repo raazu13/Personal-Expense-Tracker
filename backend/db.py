@@ -25,8 +25,15 @@ def init_db():
                 email TEXT UNIQUE NOT NULL,
                 password_hash TEXT NOT NULL,
                 name TEXT DEFAULT '',
+                security_question TEXT DEFAULT '',
+                security_answer_hash TEXT DEFAULT '',
                 created_at TIMESTAMP DEFAULT NOW()
             )
+        """)
+        cur.execute("""
+            ALTER TABLE users 
+            ADD COLUMN IF NOT EXISTS security_question TEXT DEFAULT '',
+            ADD COLUMN IF NOT EXISTS security_answer_hash TEXT DEFAULT '';
         """)
 
         cur.execute("""
@@ -90,6 +97,7 @@ def seed_default_categories(user_id: int):
         ("Entertainment", "#06b6d4", 2000),
         ("Health", "#10b981", 3000),
         ("Shopping", "#f59e0b", 5000),
+        ("Miscellaneous", "#9ca3af", 2000),
     ]
     conn = get_connection()
     with conn.cursor() as cur:

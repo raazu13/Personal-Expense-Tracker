@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext'
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -43,15 +44,29 @@ export default function Login() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 ml-1">Password</label>
-            <input
-              type="password"
-              required
-              className="input w-full bg-gray-50 dark:bg-gray-900 border-gray-200 focus:bg-white"
-              placeholder="••••••••"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
+            <div className="flex justify-between items-center mb-1.5 ml-1 pr-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+              <Link to="/forgot-password" className="text-xs font-semibold text-primary-600 hover:text-primary-700 dark:text-primary-400 hover:underline">
+                Forgot password?
+              </Link>
+            </div>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                className="input w-full bg-gray-50 dark:bg-gray-900 border-gray-200 focus:bg-white pr-10"
+                placeholder="••••••••"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+              <button 
+                type="button" 
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none"
+              >
+                {showPassword ? "👁️‍🗨️" : "👁️"}
+              </button>
+            </div>
           </div>
           <button type="submit" disabled={isSubmitting} className="btn-primary w-full py-3 text-base mt-4 shadow-lg hover:-translate-y-0.5 hover:shadow-primary-500/25 transition-all">
             {isSubmitting ? 'Signing in...' : 'Sign In'}

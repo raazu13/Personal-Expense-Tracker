@@ -43,9 +43,9 @@ export function AuthProvider({ children }) {
     }
   }
 
-  const register = async (name, email, password) => {
+  const register = async (name, email, password, security_question, security_answer) => {
     try {
-      const res = await client.post('/api/auth/register', { name, email, password })
+      const res = await client.post('/api/auth/register', { name, email, password, security_question, security_answer })
       setToken(res.data.token)
       setUser(res.data.user)
       toast.success('Account created successfully!')
@@ -56,14 +56,29 @@ export function AuthProvider({ children }) {
     }
   }
 
+  const deleteAccount = async () => {
+    try {
+      await client.delete('/api/auth/account')
+      setToken(null)
+      setUser(null)
+      localStorage.removeItem('token')
+      toast.success('Account permanently deleted.')
+      return true
+    } catch (err) {
+      toast.error('Failed to delete account')
+      return false
+    }
+  }
+
   const logout = () => {
     setToken(null)
     setUser(null)
+    localStorage.removeItem('token')
     toast.success('Logged out successfully')
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   )
