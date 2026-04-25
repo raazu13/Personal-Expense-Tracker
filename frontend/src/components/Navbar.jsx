@@ -103,6 +103,13 @@ export default function Navbar() {
                 </Link>
               )
             })}
+            <button
+              onClick={logout}
+              className="flex-1 flex flex-col items-center py-1.5 rounded-lg text-xs font-medium transition-all text-red-500 hover:text-red-600 dark:text-red-400"
+            >
+              <span className="text-base">🚪</span>
+              <span className="truncate w-full text-center">Logout</span>
+            </button>
           </div>
         )}
       </div>
