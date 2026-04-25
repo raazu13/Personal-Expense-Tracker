@@ -24,8 +24,8 @@ def _linear_regression(xs, ys):
     return slope, intercept
 
 
-def predict_end_of_month(month: str) -> dict:
-    rows = get_current_month_daily(month)
+def predict_end_of_month(user_id: int, month: str) -> dict:
+    rows = get_current_month_daily(user_id, month)
 
     year, mon = map(int, month.split("-"))
     days_in_month = calendar.monthrange(year, mon)[1]

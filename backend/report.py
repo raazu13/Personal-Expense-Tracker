@@ -1,43 +1,45 @@
 import os
-import sqlite3
+import psycopg2.extras
 from fpdf import FPDF
 from datetime import datetime
-from db import DB_PATH
+from db import get_connection
 
-REPORTS_DIR = os.path.join(os.path.dirname(os.path.abspath(DB_PATH)), "reports")
+REPORTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "reports")
 
 
 
-def generate_monthly_report(month: str) -> str:
+def generate_monthly_report(user_id: int, month: str) -> str:
     """Generate a PDF report for the given month (YYYY-MM). Returns the file path."""
     os.makedirs(REPORTS_DIR, exist_ok=True)
 
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+    conn = get_connection()
+    with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as c:
+        # Fetch expenses
+        c.execute(
+            """
+            SELECT e.date, e.description, c.name as category, e.amount, e.payment_method, e.note
+            FROM expenses e
+            LEFT JOIN categories c ON e.category_id = c.id
+            WHERE e.user_id = %s AND TO_CHAR(e.date, 'YYYY-MM') = %s
+            ORDER BY e.date
+            """,
+            (user_id, month)
+        )
+        expenses = c.fetchall()
 
-    # Fetch expenses
-    expenses = conn.execute(
-        """
-        SELECT e.date, e.description, c.name as category, e.amount, e.payment_method, e.note
-        FROM expenses e
-        LEFT JOIN categories c ON e.category_id = c.id
-        WHERE strftime('%Y-%m', e.date) = ?
-        ORDER BY e.date
-        """,
-        (month,)
-    ).fetchall()
-
-    # Category totals
-    cat_totals = conn.execute(
-        """
-        SELECT c.name, COALESCE(SUM(e.amount), 0) as total
-        FROM categories c
-        LEFT JOIN expenses e ON e.category_id = c.id AND strftime('%Y-%m', e.date) = ?
-        GROUP BY c.id
-        ORDER BY total DESC
-        """,
-        (month,)
-    ).fetchall()
+        # Category totals
+        c.execute(
+            """
+            SELECT c.name, COALESCE(SUM(e.amount), 0) as total
+            FROM categories c
+            LEFT JOIN expenses e ON e.category_id = c.id AND TO_CHAR(e.date, 'YYYY-MM') = %s AND e.user_id = %s
+            WHERE c.user_id = %s
+            GROUP BY c.id
+            ORDER BY total DESC
+            """,
+            (month, user_id, user_id)
+        )
+        cat_totals = c.fetchall()
 
     conn.close()
 

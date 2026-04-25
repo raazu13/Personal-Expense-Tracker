@@ -6,8 +6,8 @@ def _template(theme: str) -> str:
     return "plotly_dark" if theme == "dark" else "plotly_white"
 
 
-def monthly_bar_chart(theme: str = "light") -> str:
-    data = get_monthly_totals(12)
+def monthly_bar_chart(user_id: int, theme: str = "light") -> str:
+    data = get_monthly_totals(user_id, 12)
 
     if not data:
         fig = go.Figure()
@@ -35,8 +35,8 @@ def monthly_bar_chart(theme: str = "light") -> str:
     return fig.to_html(full_html=False, include_plotlyjs="cdn")
 
 
-def category_pie_chart(month: str, theme: str = "light") -> str:
-    data = [d for d in get_category_breakdown(month) if d["spent"] > 0]
+def category_pie_chart(user_id: int, month: str, theme: str = "light") -> str:
+    data = [d for d in get_category_breakdown(user_id, month) if d["spent"] > 0]
 
     if not data:
         fig = go.Figure()
@@ -61,8 +61,8 @@ def category_pie_chart(month: str, theme: str = "light") -> str:
     return fig.to_html(full_html=False, include_plotlyjs="cdn")
 
 
-def category_trend_chart(category_id: int, category_name: str = "", theme: str = "light") -> str:
-    data = get_category_trend(category_id, 6)
+def category_trend_chart(user_id: int, category_id: int, category_name: str = "", theme: str = "light") -> str:
+    data = get_category_trend(user_id, category_id, 6)
 
     if not data:
         fig = go.Figure()
