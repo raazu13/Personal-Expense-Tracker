@@ -34,6 +34,21 @@
 
 ---
 
+## 📸 App Showcase
+
+*(Drag and drop your GitHub-generated screenshot links below!)*
+
+> **Dashboard & Dark Mode**
+*(Paste Dashboard `.png` link here)*
+
+> **Interactive Plotly Analytics**
+*(Paste Analytics `.png` link here)*
+
+> **Profile & Account Management**
+*(Paste Profile `.png` link here)*
+
+---
+
 ## 🏗️ System Architecture
 
 ```text
