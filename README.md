@@ -36,16 +36,20 @@
 
 ## 📸 App Showcase
 
-*(Drag and drop your GitHub-generated screenshot links below!)*
 
-> **Dashboard & Dark Mode**
-*(Paste Dashboard `.png` link here)*
+> **Dashboard **
+*(<img width="2879" height="1726" alt="image" src="https://github.com/user-attachments/assets/c30e3289-dbf2-4684-be9b-772c02abc0ac" />
+)*
 
 > **Interactive Plotly Analytics**
-*(Paste Analytics `.png` link here)*
+*(<img width="2879" height="1727" alt="image" src="https://github.com/user-attachments/assets/cab6f9f0-8cb4-49bc-9be5-0dc6552798e6" /> <img width="2877" height="1725" alt="image" src="https://github.com/user-attachments/assets/e5c27973-95f7-4ade-8a90-f8b8be059b44" /> <img width="2878" height="1720" alt="image" src="https://github.com/user-attachments/assets/ca7a0185-5857-45d0-89fb-8ac5483c9891" />
+
+)*
 
 > **Profile & Account Management**
-*(Paste Profile `.png` link here)*
+*(<img width="2879" height="1525" alt="image" src="https://github.com/user-attachments/assets/12b0fa17-cc5e-4663-80bf-e8646a889b1c" />  <img width="2873" height="1033" alt="image" src="https://github.com/user-attachments/assets/e820c65b-5b68-4bde-aad9-53d677594db0" />
+
+)*
 
 ---
 
